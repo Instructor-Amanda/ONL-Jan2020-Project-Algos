@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <style>
+            #map {
+                height: 400px;
+                width: 400px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Google Map Practice</h1>
+        <div id="map"></div>
+        <hr>
+        <!-- <p>Latitude: <input id='lat' type='text' placeholder='-90.000 to 90.000'></p>
+        <p>Longitude: <input id='lng' type='text' placeholder='-180.000 to 180.000'></p> -->
+        <p>Address: <input id='address' type='text'></p>
+        <button onclick="getCoordinates()">Submit</button>
+    </body>
+    <script>
+        // N and E are positive values; S and W are negative
+        // function initMap(latitude,longitude){
+        //     var location = {lat: latitude, lng: longitude};  //latitude and longitude for our google map center
+        //     if(latitude == undefined || longitude == undefined){
+        //         location = {lat: 47.6062, lng: -122.3321};  //default position
+        //     }
+        //     var map = new google.maps.Map(
+        //         document.getElementById('map'),
+        //         {zoom: 10, center: location}
+        //     )
+        //     var marker = new google.maps.Marker({position: location, map: map, title:"hello world!"});
+        // }
+        function initMap(center){
+            var location = center;  //latitude and longitude for our google map center
+            if(center == undefined){
+                location = {lat: 47.6062, lng: -122.3321};  //default position
+            }
+            var map = new google.maps.Map(
+                document.getElementById('map'),
+                {zoom: 10, center: location}
+            )
+            var marker = new google.maps.Marker({position: location, map: map, title:"hello world!"});
+        }
+        
+        function getCoordinates(){
+            // var lat = Number(document.getElementById('lat').value);
+            // var lng = Number(document.getElementById('lng').value);
+            // initMap(lat,lng);
+            var location = new google.maps.Geocoder();
+            var address = document.getElementById('address').value;
+            console.log(address);
+            location.geocode({'address':address}, function(results,status){
+                if(status == 'OK'){
+                    latlng = results[0].geometry.location;
+                    console.log(latlng);
+                    initMap(latlng);
+                    
+                }
+            })
+        }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
+</html>
